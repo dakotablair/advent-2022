@@ -64,8 +64,77 @@ const day2 = () => {
   console.log("Part 2: 89, 76", compute([...opcodes], 89, 76))
 }
 
+const directions = {
+ D: [0, -1],
+ L: [-1, 0],
+ R: [1, 0],
+ U: [0, 1],
+}
+
+const parseMove = (move) => {
+  const magnitude = parseInt(move.substr(1))
+  const direction = directions[move[0]]
+  return [magnitude, direction]
+}
+
+const makeMove = (crumbs, head, move, steps) => {
+  const [moveMag, moveDir] = move
+  for(let i=0;i<moveMag;i++) {
+    head = [head[0] + moveDir[0], head[1] + moveDir[1]]
+    headKey = JSON.stringify(head)
+    if(!(headKey in crumbs)) crumbs[headKey] = steps + i + 1
+  }
+  steps = steps + moveMag
+  return [crumbs, head, steps]
+}
+
+const l1Norm = (point) => {
+  const norm = Math.abs(point[0]) + Math.abs(point[1])
+  if(Number.isNaN(norm)) console.log(`point ${point}, pt: [${point[0]}, ${point[1]}]`)
+  return norm
+}
+
+const intersection = (objA, objB) => Object.keys(objA).filter(key => key in objB)
+
+const day3 = () => {
+  const content = fs.readFileSync("assets/day3.txt", {encoding: "utf-8"})
+  //const content = "R10,U10,L10,D8\nL10,U2,R11\n"
+  //const content = "R75,D30,R83,U83,L12,D49,R71,U7,L72\nU62,R66,U55,R34,D71,R55,D58,R83\n"
+  //const content = "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51\nU98,R91,D20,R16,D67,R40,U7,R15,U6,R7\n"
+  const wires = content.split("\n").slice(0, 2)
+  const paths = []
+  wires.forEach(wire => {
+    let crumbs = {}
+    let head = [0, 0]
+    let steps = 0
+    const moves = wire.split(",")
+    moves.forEach(move => {
+      const parsedMove = parseMove(move)
+      const [outX, outY, outZ] = makeMove(crumbs, head, parsedMove, steps)
+      crumbs = outX
+      head = outY
+      steps = outZ
+    })
+    paths.push(crumbs)
+  })
+  const crossings = intersection(...paths)
+  const distances = crossings.map(crumb => {
+    const distance = l1Norm(JSON.parse(crumb))
+    return distance
+  })
+  const cross = Math.min(...distances)
+  console.log("Part 1:", cross)
+  const steps = crossings.map(crumb => {
+    const out = paths.map(path => {
+      return path[crumb]
+    }).reduce((a, b) => a + b)
+    return out
+  })
+  console.log("Part 2:", Math.min(...steps))
+}
+
 const main = () => {
-  day2()
+  day3()
 }
 
 if(require.main === module) {
