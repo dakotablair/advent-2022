@@ -27,8 +27,9 @@ const day1 = () => {
 const compute = (program, noun=12, verb=2) => {
   program[1] = noun
   program[2] = verb
-  //const program = [1,0,0,0,99]
-  //const program = [1,1,1,4,99,5,6,0,99]
+  // Test cases
+  // const program = [1,0,0,0,99]
+  // const program = [1,1,1,4,99,5,6,0,99]
   const evaluate = {
     1: (codelist, a, b, c) => {
       codelist[c] = codelist[a] + codelist[b]
@@ -90,17 +91,19 @@ const makeMove = (crumbs, head, move, steps) => {
 
 const l1Norm = (point) => {
   const norm = Math.abs(point[0]) + Math.abs(point[1])
-  if(Number.isNaN(norm)) console.log(`point ${point}, pt: [${point[0]}, ${point[1]}]`)
   return norm
 }
 
-const intersection = (objA, objB) => Object.keys(objA).filter(key => key in objB)
+const intersection = (objA, objB) => (
+  Object.keys(objA).filter(key => key in objB)
+)
 
 const day3 = () => {
   const content = fs.readFileSync("assets/day3.txt", {encoding: "utf-8"})
-  //const content = "R10,U10,L10,D8\nL10,U2,R11\n"
-  //const content = "R75,D30,R83,U83,L12,D49,R71,U7,L72\nU62,R66,U55,R34,D71,R55,D58,R83\n"
-  //const content = "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51\nU98,R91,D20,R16,D67,R40,U7,R15,U6,R7\n"
+  // Test cases
+  // const content = "R10,U10,L10,D8\nL10,U2,R11\n"
+  // const content = "R75,D30,R83,U83,L12,D49,R71,U7,L72\nU62,R66,U55,R34,D71,R55,D58,R83\n"
+  // const content = "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51\nU98,R91,D20,R16,D67,R40,U7,R15,U6,R7\n"
   const wires = content.split("\n").slice(0, 2)
   const paths = []
   wires.forEach(wire => {
@@ -133,8 +136,62 @@ const day3 = () => {
   console.log("Part 2:", Math.min(...steps))
 }
 
+const notMonotoneIncreasing = (pass) => (pass.split("")
+  .map((letter, ix) => letter <= pass[ix+1])
+  .slice(0, pass.length - 1)
+  .includes(false)
+)
+
+const twoAdjacent = (pass) => (pass.split("")
+  .map((letter, ix) => letter === pass[ix+1])
+  .includes(true)
+)
+
+const passPass = (pass) => {
+  thisPass = pass.toString()
+  return twoAdjacent(thisPass) && !notMonotoneIncreasing(thisPass)
+}
+
+// Test cases
+// 6778
+// 111122
+// 117888
+const twoAdjacentExact = (pass) => {
+  let streak = 1
+  const streaks = []
+  for(let i=0;i < pass.length;i++) {
+    if(pass[i] !== pass[i+1]) {
+      if(streak === 1) continue
+      streaks.push(streak)
+      streak = 1
+      continue
+    }
+    streak += 1
+  }
+  return streaks.includes(2)
+}
+
+const passPassII = (pass) => {
+  thisPass = pass.toString()
+  const cond = twoAdjacentExact(thisPass) && !notMonotoneIncreasing(thisPass)
+  return cond
+}
+
+const day4 = () => {
+  let passing = 0
+  for(let i=356261;i<=846303;i++) {
+    if(passPass(i)) passing += 1
+  }
+  console.log("Part 1:", passing)
+  let passingExact = 0
+  for(let i=356261;i<=846303;i++) {
+    if(passPassII(i)) passingExact += 1
+  }
+  console.log("Part 2:", passingExact)
+}
+
 const main = () => {
-  day3()
+  day4()
 }
 
 if(require.main === module) {
