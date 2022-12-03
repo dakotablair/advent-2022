@@ -1,4 +1,4 @@
-const fs = require("fs")
+import * as fs from 'fs';
 
 const day1 = () => {
   console.log("Day 1")
@@ -17,7 +17,7 @@ const day1 = () => {
     "  Part 1: ",
     Math.max(...encumberances)
   )
-  const integerCompare = (a, b) => {
+  const integerCompare = (a: number, b: number) => {
     return Math.sign(a - b);
   }
   console.log(
@@ -26,4 +26,4 @@ const day1 = () => {
   )
 }
 
-module.exports = day1
+export default day1

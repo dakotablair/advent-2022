@@ -1,9 +1,9 @@
-const fs = require("fs")
+import * as fs from 'fs';
 
 const day2 = () => {
   console.log("Day 2")
   const content = fs.readFileSync("assets/2022-12-02.txt", {encoding: "utf-8"})
-  scores = {
+  const scores: Record<string, number>  = {
     "A": 1, // rock
     "B": 2, // paper
     "C": 3, // scissors
@@ -27,7 +27,7 @@ const day2 = () => {
     total
   )
   // outcomes desired
-  ods = {
+  const ods: Record<string, number> = {
     'X': 2, // loss
     'Y': 0, // tie
     'Z': 1, // win
@@ -53,4 +53,4 @@ const day2 = () => {
   )
 }
 
-module.exports = day2
+export default day2
