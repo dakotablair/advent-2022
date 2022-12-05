@@ -3,4 +3,4 @@
 This is a repository for solutions to the 2022 Advent of Code.
 It is a work in progress.
 
-To run, execute the command `./index.js` in your favorite shell.
+To run, execute the command `./index.mts` in your favorite shell.
