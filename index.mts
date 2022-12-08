@@ -8,6 +8,7 @@ import day3 from "./src/day3.mjs"
 import day4 from "./src/day4.mjs"
 import day5 from "./src/day5.mjs"
 import day6 from "./src/day6.mjs"
+import day7 from "./src/day7.mjs"
 
 const main = () => {
   day1()
@@ -16,6 +17,7 @@ const main = () => {
   day4()
   day5()
   day6()
+  day7()
 }
 
 if(process.argv[1] === path(import.meta.url)) {

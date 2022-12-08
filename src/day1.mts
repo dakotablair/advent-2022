@@ -1,5 +1,9 @@
 import * as fs from 'node:fs';
 
+export const integerCompare = (a: number, b: number) => {
+  return Math.sign(a - b);
+}
+
 const day1 = () => {
   console.log("Day 1")
   const content = fs.readFileSync("assets/2022-12-01.txt", {encoding: "utf-8"})
@@ -17,9 +21,6 @@ const day1 = () => {
     "  Part 1: ",
     Math.max(...encumberances)
   )
-  const integerCompare = (a: number, b: number) => {
-    return Math.sign(a - b);
-  }
   console.log(
     "  Part 2: ",
     encumberances.sort(integerCompare).reverse().slice(0, 3).reduce((a, b) => a + b)
